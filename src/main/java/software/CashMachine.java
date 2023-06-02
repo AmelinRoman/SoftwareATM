@@ -1,12 +1,23 @@
 package software;
 
+import software.command.CommandExecutor;
 import software.consoleHelper.ConsoleHelper;
+import software.exception.InterruptOperationException;
 
-import java.io.IOException;
-import java.util.Arrays;
-
+/**
+ * @author Amelin Roman
+ */
 public class CashMachine {
-    public static void main(String[] args) throws IOException {
-        System.out.println(Arrays.toString(ConsoleHelper.getValidTwoDigits(ConsoleHelper.askCurrencyCode())));
+    public static void main(String[] args) {
+        try {
+            CommandExecutor.execute(Operation.LOGIN);
+            Operation operation;
+            do {
+                operation = ConsoleHelper.askOperation();
+                CommandExecutor.execute(operation);
+            } while (operation != Operation.EXIT);
+        } catch (InterruptOperationException ignored) {
+            ConsoleHelper.writeMessage("До свидания, всего доброго");
+        }
     }
 }
